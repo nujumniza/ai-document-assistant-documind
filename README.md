@@ -26,21 +26,21 @@ DocuMind AI includes a dashboard, document management interface, AI-powered ques
 
 ### Dashboard
 
-![DocuMind AI Dashboard](docs/images/dashboard.png)
+![DocuMind AI Dashboard](docs/images/dashboard.PNG)
 
 ### Document Library
 
-![DocuMind AI Document Library](docs/images/document-library.png)
+![DocuMind AI Document Library](docs/images/document-library.PNG)
 
 ### AI Assistant
 
-![DocuMind AI Assistant](docs/images/ai-assistant.png)
+![DocuMind AI Assistant](docs/images/ai-assistant.PNG)
 
 ### Source Evidence
 
 Answers include expandable source evidence with document filenames and page references, helping users verify generated responses against the original PDFs.
 
-![DocuMind AI Source Evidence](docs/images/source-evidence.png)
+![DocuMind AI Source Evidence](docs/images/source-evidence.PNG)
 
 ## Technology Stack
 
