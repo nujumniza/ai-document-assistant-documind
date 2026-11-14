@@ -20,6 +20,28 @@ Instead of relying only on an LLM's pre-trained knowledge, the application retri
 - **REST API:** Backend endpoints built using FastAPI.
 - **Interactive interface:** Streamlit-based user interface.
 
+## Application Screenshots
+
+DocuMind AI includes a dashboard, document management interface, AI-powered question answering, and source evidence for answer verification.
+
+### Dashboard
+
+![DocuMind AI Dashboard](docs/images/dashboard.png)
+
+### Document Library
+
+![DocuMind AI Document Library](docs/images/document-library.png)
+
+### AI Assistant
+
+![DocuMind AI Assistant](docs/images/ai-assistant.png)
+
+### Source Evidence
+
+Answers include expandable source evidence with document filenames and page references, helping users verify generated responses against the original PDFs.
+
+![DocuMind AI Source Evidence](docs/images/source-evidence.png)
+
 ## Technology Stack
 
 | Component       | Technology                               |
