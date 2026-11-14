@@ -73,6 +73,7 @@ The application follows a RAG-based architecture:
 
 ```text
 ai-document-assistant/
+│
 ├── app/
 │   ├── main.py
 │   └── services/
@@ -80,13 +81,27 @@ ai-document-assistant/
 │       ├── embeddings.py
 │       ├── rag.py
 │       └── vector_store.py
+│
 ├── frontend/
 │   └── streamlit_app.py
+│
 ├── tests/
 │   ├── test_api.py
 │   ├── test_chunking.py
 │   └── test_rag.py
-├── documents/
+│
+├── docs/
+│   ├── architecture.md
+│   ├── deployment.md
+│   ├── portfolio-project-description.md
+│   ├── screenshot-checklist.md
+│   ├── technical-documentation.md
+│   └── images/
+│       ├── dashboard.PNG
+│       ├── document-library.PNG
+│       ├── ai-assistant.PNG
+│       └── source-evidence.PNG
+│
 ├── requirements.txt
 ├── .env.example
 ├── .gitignore
