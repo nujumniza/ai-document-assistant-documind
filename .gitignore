@@ -1,9 +1,31 @@
+
+# Environment variables and secrets
 .env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Python environments
 .venv/
 .venv*/
+venv/
+
+# Python generated files
 __pycache__/
 *.py[cod]
 .pytest_cache/
+
+# Application data
 data/chroma/
+data/resolveiq.db
+
+# User-uploaded documents
 documents/
+
+# Nested project copy
 documind-ai-document-assistant/
+
+# IDE and operating system files
+.vscode/
+.DS_Store
+Thumbs.db
