@@ -1,27 +1,129 @@
-# DocuMind AI — Application Screenshots
+# Application Screenshots — DocuMind AI & ResolveIQ
 
-This section showcases the DocuMind AI application interface and its core functionality through screenshots captured from the running application.
+This document identifies the screenshots required to demonstrate the application's main capabilities. All screenshots should be captured from the running application using realistic demonstration data.
 
-## 1. Dashboard
+## Part A — DocuMind AI
 
-The dashboard provides an overview of the application, including document statistics, system health, LLM provider status, and recently uploaded documents.
+### 1. Dashboard
 
-![DocuMind AI Dashboard](images/dashboard.PNG)
+**Filename:** `dashboard.PNG`
 
-## 2. Document Library
+Show:
 
-The document library allows users to upload PDF documents, view indexed documents, inspect page and chunk counts, and manage uploaded files.
+- DocuMind AI branding.
+- Document statistics.
+- System health.
+- LLM provider status.
+- Recently uploaded documents.
 
-![DocuMind AI Document Library](images/document-library.PNG)
+### 2. Document Library
 
-## 3. AI Assistant
+**Filename:** `document-library.PNG`
 
-The AI Assistant provides a question-answering interface that retrieves relevant information from uploaded documents and generates context-grounded responses.
+Show:
 
-![DocuMind AI Assistant](images/ai-assistant.PNG)
+- PDF upload interface.
+- Uploaded document list.
+- Document filenames.
+- Page and chunk counts.
+- Document management controls.
 
-## 4. Source Evidence
+### 3. AI Assistant
 
-This screenshot demonstrates the document-grounding capability of DocuMind AI. It shows a generated answer alongside expanded source evidence, including the source filename and page number, allowing users to verify the information against the original document.
+**Filename:** `ai-assistant.PNG`
 
-![DocuMind AI Source Evidence](images/source-evidence.PNG)
+Show:
+
+- AI Assistant interface.
+- A question about an uploaded document.
+- Generated answer.
+- Clear indication that the answer uses retrieved document context.
+
+### 4. Source Evidence
+
+**Filename:** `source-evidence.PNG`
+
+Show:
+
+- A generated answer.
+- Expanded source evidence.
+- Source filename and page number.
+- A sample question whose answer can be verified against the original document.
+
+## Part B — ResolveIQ
+
+### 5. ResolveIQ Dashboard
+
+**Filename:** `ResolveIQ-Dashboard.PNG`
+
+Show:
+
+- ResolveIQ branding.
+- Incident statistics.
+- Priority distribution.
+- Pending human reviews.
+- Incident Workspace with the incident selector.
+
+### 6. Incident Intelligence
+
+**Filename:** `Incident-Intelligence.PNG`
+
+Show:
+
+- A selected customer incident.
+- Incident category.
+- Customer sentiment.
+- Incident summary.
+- Business impact.
+- Calculated priority.
+- Recommended actions.
+
+### 7. AI Investigation Report
+
+**Filename:** `AI-Investigation-Report.PNG`
+
+Show:
+
+- Investigation report for a selected incident.
+- Historical incident findings, where available.
+- Retrieved support policy information.
+- Organisation-specific knowledge evidence.
+- Tools used by the investigation agent.
+
+### 8. Human Review and Approval
+
+**Filename:** `human-review-approval.PNG`
+
+Show:
+
+- AI-generated customer response draft.
+- Editable response field.
+- Human approval and rejection controls.
+- Review history showing a recorded decision.
+
+## Screenshot Guidelines
+
+- Capture screenshots from the actual running application.
+- Use realistic but fictional customer and incident information.
+- Avoid displaying API keys, passwords, personal information, or other confidential data.
+- Use readable browser zoom and screen dimensions.
+- Ensure important information is visible without excessive scrolling.
+- Prefer PNG screenshots with consistent naming.
+- Save all screenshots in the `docs/images/` directory.
+
+## Expected Screenshot Directory
+
+```text
+docs/
+└── images/
+    ├── dashboard.PNG
+    ├── document-library.PNG
+    ├── ai-assistant.PNG
+    ├── source-evidence.PNG
+    ├── ResolveIQ-Dashboard.PNG
+    ├── Incident-Intelligence.PNG
+    ├── AI-Investigation-Report.PNG
+    └── human-review-approval.PNG
+```
+
+**Note:** These screenshots document the implemented application. They should not depict functionality that is only planned or not yet available.

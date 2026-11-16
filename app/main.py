@@ -5,7 +5,7 @@ from uuid import uuid4
 
 import pymupdf
 from dotenv import load_dotenv
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from pydantic import BaseModel, Field
 
 from app.services.chunking import chunk_text
@@ -24,7 +24,10 @@ from app.services.vector_store import (
     list_documents,
     delete_document
 )
-
+from app.services.human_review import (
+    review_incident,
+    get_incident_reviews
+)
 
 # Load environment variables from the project .env file.
 load_dotenv()
@@ -241,7 +244,132 @@ async def upload_document(file: UploadFile = File(...)):
         "storage_status": "success"
     }
 
+# --------------------------------------------------
+# RESOLVEIQ - ORGANISATION KNOWLEDGE BASE
+# --------------------------------------------------
 
+@app.post("/resolveiq/knowledge/upload")
+async def upload_resolveiq_knowledge(
+    organisation: str = Form(...),
+    file: UploadFile = File(...)
+):
+    """
+    Upload a PDF into an organisation-specific
+    ResolveIQ knowledge base.
+    """
+
+    organisation_id = organisation.strip().casefold()
+
+    if len(organisation_id) < 2:
+        raise HTTPException(
+            status_code=400,
+            detail="A valid organisation name is required."
+        )
+
+    if len(organisation_id) > 150:
+        raise HTTPException(
+            status_code=400,
+            detail="Organisation name is too long."
+        )
+
+    if not file.filename or not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(
+            status_code=400,
+            detail="Only PDF files are supported."
+        )
+
+    file_content = await file.read(MAX_FILE_SIZE + 1)
+
+    if len(file_content) > MAX_FILE_SIZE:
+        raise HTTPException(
+            status_code=413,
+            detail="File exceeds the 10 MB size limit."
+        )
+
+    try:
+        pdf = pymupdf.open(
+            stream=file_content,
+            filetype="pdf"
+        )
+
+        with pdf:
+            if pdf.needs_pass:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Password-protected PDFs are not supported."
+                )
+
+            if len(pdf) > MAX_PAGES:
+                raise HTTPException(
+                    status_code=400,
+                    detail="PDF exceeds the 100-page limit."
+                )
+
+            extracted_pages = []
+
+            for page_number, page in enumerate(pdf, start=1):
+                page_text = page.get_text("text")
+
+                extracted_pages.append({
+                    "page": page_number,
+                    "text": page_text
+                })
+
+    except pymupdf.FileDataError:
+        raise HTTPException(
+            status_code=400,
+            detail="The uploaded file is not a valid PDF."
+        )
+
+    full_text = "\n".join(
+        page["text"] for page in extracted_pages
+    )
+
+    if not full_text.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="No extractable text was found in the PDF."
+        )
+
+    document_id = str(uuid4())
+
+    document_chunks = []
+
+    for page in extracted_pages:
+        page_chunks = chunk_text(page["text"])
+
+        for chunk_index, chunk in enumerate(page_chunks, start=1):
+            document_chunks.append({
+                "chunk_id": (
+                    f"{document_id}-"
+                    f"page-{page['page']}-"
+                    f"chunk-{chunk_index}"
+                ),
+                "page_number": page["page"],
+                "chunk_index": chunk_index,
+                "word_count": len(chunk.split()),
+                "text": chunk
+            })
+
+    embedded_chunks = generate_embeddings(document_chunks)
+
+    stored_chunks = store_chunks(
+        embedded_chunks=embedded_chunks,
+        document_id=document_id,
+        filename=file.filename,
+        organisation_id=organisation_id
+    )
+
+    return {
+        "message": "ResolveIQ knowledge document uploaded successfully.",
+        "organisation_id": organisation_id,
+        "document_id": document_id,
+        "filename": file.filename,
+        "total_pages": len(extracted_pages),
+        "total_chunks": len(embedded_chunks),
+        "stored_chunks": stored_chunks,
+        "storage_status": "success"
+    }
 @app.post("/documents/search")
 async def search_documents(request: SearchRequest):
 
@@ -335,4 +463,199 @@ async def ask_documents(request: SearchRequest):
             }
             for chunk in retrieved_chunks
         ]
+    }
+
+# --------------------------------------------------
+# RESOLVEIQ - INCIDENT INTELLIGENCE
+# --------------------------------------------------
+
+from typing import Literal
+
+from app.services.incident_intelligence import (
+    analyse_incident,
+    get_incidents
+)
+
+class IncidentReviewRequest(BaseModel):
+    decision: Literal["approved", "rejected"]
+
+    reviewer: str = Field(
+        ...,
+        min_length=2,
+        max_length=150
+    )
+
+    edited_response: str | None = Field(
+        default=None,
+        max_length=10000
+    )
+class IncidentRequest(BaseModel):
+
+    organisation: str = Field(
+        ...,
+        min_length=2,
+        max_length=150
+    )
+
+    customer_name: str = Field(
+        ...,
+        min_length=2,
+        max_length=150
+    )
+
+    subject: str = Field(
+        ...,
+        min_length=3,
+        max_length=250
+    )
+
+    description: str = Field(
+        ...,
+        min_length=10,
+        max_length=5000
+    )
+
+    severity: Literal[
+        "low", "medium", "high", "critical"
+    ]
+
+    business_impact: Literal[
+        "low", "medium", "high", "critical"
+    ]
+
+    urgency: Literal[
+        "low", "medium", "high", "critical"
+    ]
+
+    affected_users: int = Field(
+        default=1,
+        ge=1,
+        le=100000
+    )
+
+
+@app.post("/incidents/analyze")
+async def analyse_customer_incident(request: IncidentRequest):
+
+    try:
+        result = analyse_incident(
+            incident=request.dict(),
+            llm_provider=llm_provider
+        )
+
+        return result
+
+    except Exception:
+        logger.exception("ResolveIQ incident analysis failed")
+
+        raise HTTPException(
+            status_code=502,
+            detail=(
+                "Incident analysis failed. "
+                "Check the backend terminal for details."
+            )
+        )
+
+
+@app.get("/incidents")
+async def get_saved_incidents():
+
+    incidents = get_incidents()
+
+    return {
+        "total_incidents": len(incidents),
+        "incidents": incidents
+    }
+
+# --------------------------------------------------
+# RESOLVEIQ - AGENTIC INVESTIGATION
+# --------------------------------------------------
+
+from app.services.incident_agent import (
+    run_investigation_agent,
+    get_investigations
+)
+
+
+@app.post("/incidents/{incident_id}/investigate")
+async def investigate_incident(incident_id: str):
+
+    try:
+        return run_investigation_agent(
+            incident_id=incident_id,
+            llm_provider=llm_provider
+        )
+
+    except ValueError as error:
+        raise HTTPException(
+            status_code=404,
+            detail=str(error)
+        )
+
+    except Exception:
+        logger.exception("ResolveIQ agent investigation failed")
+
+        raise HTTPException(
+            status_code=502,
+            detail=(
+                "Agent investigation failed. "
+                "Check the backend terminal."
+            )
+        )
+
+
+@app.get("/incidents/{incident_id}/investigations")
+async def get_incident_investigations(incident_id: str):
+
+    try:
+        investigations = get_investigations(incident_id)
+
+        return {
+            "incident_id": incident_id,
+            "total_investigations": len(investigations),
+            "investigations": investigations
+        }
+
+    except Exception:
+        logger.exception("Could not retrieve investigations")
+
+        raise HTTPException(
+            status_code=500,
+            detail="Could not retrieve investigations."
+        )
+
+@app.post("/incidents/{incident_id}/review")
+async def review_customer_response(
+    incident_id: str,
+    request: IncidentReviewRequest
+):
+    try:
+        return review_incident(
+            incident_id=incident_id,
+            decision=request.decision,
+            reviewer=request.reviewer,
+            edited_response=request.edited_response
+        )
+
+    except ValueError as error:
+        raise HTTPException(
+            status_code=404,
+            detail=str(error)
+        )
+
+    except Exception:
+        logger.exception("Incident review failed")
+
+        raise HTTPException(
+            status_code=500,
+            detail="Could not save incident review."
+        )
+
+
+@app.get("/incidents/{incident_id}/reviews")
+async def retrieve_incident_reviews(incident_id: str):
+
+    return {
+        "incident_id": incident_id,
+        "reviews": get_incident_reviews(incident_id)
     }
