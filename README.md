@@ -85,25 +85,25 @@ The following screenshots demonstrate the main interfaces and workflows of DocuM
 
 #### 1. ResolveIQ Dashboard
 
-![ResolveIQ Dashboard](docs/images/ResolveIQ-Dashboard.png)
+![ResolveIQ Dashboard](docs/images/ResolveIQ-Dashboard.PNG)
 
 The dashboard provides an overview of recorded incidents, priority distribution, pending human reviews, and the incident workspace.
 
 #### 2. Incident Intelligence
 
-![Incident Intelligence](docs/images/Incident-Intelligence.png)
+![Incident Intelligence](docs/images/Incident-Intelligence.PNG)
 
 Demonstrates AI-assisted incident classification, sentiment analysis, incident summarisation, business-impact assessment, priority calculation, and recommended actions.
 
 #### 3. AI Investigation Report
 
-![AI Investigation Report](docs/images/AI-Investigation-Report.png)
+![AI Investigation Report](docs/images/AI-Investigation-Report.PNG)
 
 Shows the investigation agent retrieving historical incident information, support policy details, and organisation-specific knowledge to produce an investigation report.
 
 #### 4. Human Review and Approval
 
-![Human Review and Approval](docs/images/human-review-approval.png)
+![Human Review and Approval](docs/images/human-review-approval.PNG)
 
 Demonstrates the customer response draft, editable response, human approval controls, and recorded review decisions.
 
@@ -111,25 +111,25 @@ Demonstrates the customer response draft, editable response, human approval cont
 
 #### 5. Dashboard
 
-![DocuMind AI Dashboard](docs/images/dashboard.png)
+![DocuMind AI Dashboard](docs/images/dashboard.PNG)
 
 Provides an overview of document statistics, system health, LLM provider status, and recently uploaded documents.
 
 #### 6. Document Library
 
-![Document Library](docs/images/document-library.png)
+![Document Library](docs/images/document-library.PNG)
 
 Shows PDF upload, indexed documents, page and chunk counts, and document management controls.
 
 #### 7. AI Assistant
 
-![AI Assistant](docs/images/ai-assistant.png)
+![AI Assistant](docs/images/ai-assistant.PNG)
 
 Demonstrates natural-language question answering using information retrieved from uploaded documents.
 
 #### 8. Source Evidence
 
-![Source Evidence](docs/images/source-evidence.png)
+![Source Evidence](docs/images/source-evidence.PNG)
 
 Shows an AI-generated answer alongside expandable source evidence, including document filenames and page references, allowing users to verify responses against the original documents.
 
@@ -208,14 +208,14 @@ ai-document-assistant/
 │   ├── screenshot-checklist.md
 │   ├── technical-documentation.md
 │   └── images/
-│       ├── ResolveIQ-Dashboard.png
-│       ├── Incident-Intelligence.png
-│       ├── AI-Investigation-Report.png
-│       ├── human-review-approval.png
-│       ├── dashboard.png
-│       ├── document-library.png
-│       ├── ai-assistant.png
-│       └── source-evidence.png
+│       ├── ResolveIQ-Dashboard.PNG
+│       ├── Incident-Intelligence.PNG
+│       ├── AI-Investigation-Report.PNG
+│       ├── human-review-approval.PNG
+│       ├── dashboard.PNG
+│       ├── document-library.PNG
+│       ├── ai-assistant.PNG
+│       └── source-evidence.PNG
 │
 ├── requirements.txt
 ├── .env.example

@@ -54,7 +54,7 @@ Show:
 
 ### 5. ResolveIQ Dashboard
 
-**Filename:** `resolveiq-dashboard.PNG`
+**Filename:** `ResolveIQ-Dashboard.PNG`
 
 Show:
 
@@ -66,7 +66,7 @@ Show:
 
 ### 6. Incident Intelligence
 
-**Filename:** `incident-intelligence.PNG`
+**Filename:** `Incident-Intelligence.PNG`
 
 Show:
 
@@ -80,7 +80,7 @@ Show:
 
 ### 7. AI Investigation Report
 
-**Filename:** `ai-investigation.PNG`
+**Filename:** `AI-Investigation-Report.PNG`
 
 Show:
 
@@ -92,7 +92,7 @@ Show:
 
 ### 8. Human Review and Approval
 
-**Filename:** `human-review.PNG`
+**Filename:** `human-review-approval.PNG`
 
 Show:
 
@@ -120,10 +120,10 @@ docs/
     ├── document-library.PNG
     ├── ai-assistant.PNG
     ├── source-evidence.PNG
-    ├── resolveiq-dashboard.PNG
-    ├── incident-intelligence.PNG
-    ├── ai-investigation.PNG
-    └── human-review.PNG
+    ├── ResolveIQ-Dashboard.PNG
+    ├── Incident-Intelligence.PNG
+    ├── AI-Investigation-Report.PNG
+    └── human-review-approval.PNG
 ```
 
 **Note:** These screenshots document the implemented application. They should not depict functionality that is only planned or not yet available.
