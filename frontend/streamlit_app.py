@@ -1,4 +1,4 @@
-﻿
+
 import os
 import requests
 import streamlit as st
@@ -15,7 +15,7 @@ API_BASE_URL = os.getenv(
 
 st.set_page_config(
     page_title="DocuMind AI | ResolveIQ",
-    page_icon="ðŸ“š",
+    page_icon="📚",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -414,13 +414,13 @@ def display_priority(priority):
     priority = str(priority or "").upper()
 
     if priority == "P1":
-        st.error("ðŸ”´ P1 Â· Critical")
+        st.error("🔴 P1 · Critical")
     elif priority == "P2":
-        st.warning("ðŸŸ  P2 Â· High")
+        st.warning("🟠 P2 · High")
     elif priority == "P3":
-        st.info("ðŸ”µ P3 Â· Medium")
+        st.info("🔵 P3 · Medium")
     elif priority == "P4":
-        st.success("ðŸŸ¢ P4 Â· Low")
+        st.success("🟢 P4 · Low")
     else:
         st.write(priority or "Not available")
 
@@ -466,7 +466,7 @@ if st.session_state.get("resolveiq_ui_version") != 2:
 
 with st.sidebar:
 
-    st.markdown("# ðŸ“š DocuMind AI")
+    st.markdown("# 📚 DocuMind AI")
 
     st.markdown(
         '<div class="brand-caption">INTELLIGENT DOCUMENT WORKSPACE</div>',
@@ -498,13 +498,13 @@ with st.sidebar:
         unsafe_allow_html=True
     )
 
-    st.caption("FastAPI Â· ChromaDB Â· Groq")
+    st.caption("FastAPI · ChromaDB · Groq")
     st.caption("Sentence Transformers")
 
     st.divider()
 
     st.markdown(
-        '<div class="brand-caption">DocuMind AI Â· Intelligent knowledge retrieval</div>',
+        '<div class="brand-caption">DocuMind AI · Intelligent knowledge retrieval</div>',
         unsafe_allow_html=True
     )
 
@@ -564,7 +564,7 @@ if page == "Dashboard":
 
         with c1:
             if health:
-                st.success(f"Backend Â· {health.get('status', 'Available')}")
+                st.success(f"Backend · {health.get('status', 'Available')}")
                 st.caption(health.get("application", "AI Document Assistant"))
             else:
                 st.error("Backend unavailable")
@@ -575,7 +575,7 @@ if page == "Dashboard":
                     "llm_provider",
                     health.get("provider", "Unknown")
                 )
-                st.success(f"AI Provider Â· {provider}")
+                st.success(f"AI Provider · {provider}")
                 if health.get("is_mock"):
                     st.warning("Mock provider is active.")
             else:
@@ -587,9 +587,9 @@ if page == "Dashboard":
         if documents:
             for document in documents[:5]:
                 with st.container(border=True):
-                    st.markdown(f"**ðŸ“„ {document['filename']}**")
+                    st.markdown(f"**📄 {document['filename']}**")
                     st.caption(
-                        f"{document['total_pages']} pages Â· "
+                        f"{document['total_pages']} pages · "
                         f"{document['total_chunks']} indexed chunks"
                     )
         else:
@@ -663,9 +663,9 @@ elif page == "Document Library":
                 c1, c2 = st.columns([4, 1])
 
                 with c1:
-                    st.markdown(f"**ðŸ“„ {document['filename']}**")
+                    st.markdown(f"**📄 {document['filename']}**")
                     st.caption(
-                        f"{document['total_pages']} pages Â· "
+                        f"{document['total_pages']} pages · "
                         f"{document['total_chunks']} chunks"
                     )
 
@@ -768,7 +768,7 @@ elif page == "AI Assistant":
             st.markdown(
                 """
                 <div class="soft-panel" style="text-align:center;padding:27px;">
-                    <div style="font-size:34px;">ðŸ’¬</div>
+                    <div style="font-size:34px;">💬</div>
                     <h3>What would you like to know?</h3>
                     <p>
                         Ask questions about your documents.
@@ -869,7 +869,7 @@ elif page == "AI Assistant":
 
 
 # ==========================================================
-# RESOLVEIQ â€” SERVICE OPERATIONS WORKSPACE
+# RESOLVEIQ — SERVICE OPERATIONS WORKSPACE
 # ==========================================================
 
 elif page == "ResolveIQ":
@@ -922,7 +922,7 @@ elif page == "ResolveIQ":
 
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Total Incidents", total_incidents)
-    c2.metric("P1 Â· Critical", p1_count)
+    c2.metric("P1 · Critical", p1_count)
     c3.metric("Awaiting Review", pending_count)
     c4.metric("Other Statuses", reviewed_count)
 
@@ -932,7 +932,7 @@ elif page == "ResolveIQ":
     # KNOWLEDGE BASE
     # ------------------------------------------------------
 
-    with st.expander("ðŸ“š  Organisation Knowledge Base", expanded=False):
+    with st.expander("📚  Organisation Knowledge Base", expanded=False):
 
         st.write(
             "Upload organisation-specific support procedures and reference "
@@ -985,7 +985,7 @@ elif page == "ResolveIQ":
     # SUBMIT INCIDENT
     # ------------------------------------------------------
 
-    with st.expander("ï¼‹  Submit a Customer Incident", expanded=False):
+    with st.expander("＋  Submit a Customer Incident", expanded=False):
 
         with st.form("resolveiq_incident_form"):
 
@@ -1132,15 +1132,15 @@ elif page == "ResolveIQ":
                 continue
 
             label = (
-                f"{str(item.get('priority', 'N/A')).upper()}  Â·  "
-                f"{item.get('customer_name', 'Unknown customer')}  Â·  "
-                f"{item.get('subject', 'Untitled incident')}  Â·  "
+                f"{str(item.get('priority', 'N/A')).upper()}  ·  "
+                f"{item.get('customer_name', 'Unknown customer')}  ·  "
+                f"{item.get('subject', 'Untitled incident')}  ·  "
                 f"{incident_id[:8]}"
             )
 
             incident_options[label] = incident_id
 
-        placeholder = "â€” Select an incident to review â€”"
+        placeholder = "— Select an incident to review —"
 
         options = [placeholder] + list(incident_options.keys())
 
@@ -1214,7 +1214,7 @@ elif page == "ResolveIQ":
         with header_col:
             st.markdown("### " + str(incident_details.get("subject", "Customer Incident")))
             st.caption(
-                f"{incident_details.get('organisation', '')}  Â·  "
+                f"{incident_details.get('organisation', '')}  ·  "
                 f"{incident_details.get('customer_name', '')}"
             )
 
@@ -1228,7 +1228,7 @@ elif page == "ResolveIQ":
             )
 
         st.caption(
-            f"Incident ID: {incident_id}  Â·  "
+            f"Incident ID: {incident_id}  ·  "
             f"Status: {incident_details.get('status', 'N/A')}"
         )
 
@@ -1349,7 +1349,7 @@ elif page == "ResolveIQ":
 
             with approve_col:
                 approve_clicked = st.button(
-                    "âœ“  Approve Response",
+                    "✓  Approve Response",
                     type="primary",
                     use_container_width=True,
                     key=f"approve_{incident_id}"
@@ -1357,7 +1357,7 @@ elif page == "ResolveIQ":
 
             with reject_col:
                 reject_clicked = st.button(
-                    "âœ•  Reject Response",
+                    "✕  Reject Response",
                     use_container_width=True,
                     key=f"reject_{incident_id}"
                 )
@@ -1551,7 +1551,7 @@ elif page == "ResolveIQ":
             for previous in investigation_history:
 
                 investigation_label = (
-                    "Investigation Â· "
+                    "Investigation · "
                     + str(previous.get("investigation_id", "Record"))[:8]
                 )
 
