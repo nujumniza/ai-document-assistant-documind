@@ -8,8 +8,15 @@ from datetime import datetime, timezone
 
 
 # Keep ResolveIQ data separate from the existing ChromaDB documents.
+import os
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATABASE_PATH = PROJECT_ROOT / "data" / "resolveiq.db"
+
+DATA_DIR = Path(
+    os.getenv("DATA_DIR", str(PROJECT_ROOT / "data"))
+)
+
+DATABASE_PATH = DATA_DIR / "resolveiq.db"
 
 
 

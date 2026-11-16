@@ -1,4 +1,4 @@
-
+﻿
 from pathlib import Path
 
 import chromadb
@@ -8,7 +8,10 @@ import chromadb
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 # Store the vector database inside the project.
-CHROMA_PATH = PROJECT_ROOT / "data" / "chroma"
+DATA_DIR = Path(
+    os.getenv("DATA_DIR", str(PROJECT_ROOT / "data"))
+)
+CHROMA_PATH = DATA_DIR / "chroma"
 
 
 def get_collection():
